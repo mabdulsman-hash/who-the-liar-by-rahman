@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Who The Liar? — Game Tebak Pembohong</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Limelight&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== Gambar SVG (dipakai berulang lewat <use>) ===== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#ffe59a"/>
+        <stop offset="1" stop-color="#d9a12a"/>
+      </linearGradient>
+      <linearGradient id="gBlood" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#ff8a8a"/>
+        <stop offset="1" stop-color="#d62839"/>
+      </linearGradient>
+    </defs>
+
+    <!-- Topeng pembohong -->
+    <symbol id="ico-mask" viewBox="0 0 200 170">
+      <path d="M12 62 C12 40 55 28 100 40 C145 28 188 40 188 62 C188 112 158 146 128 146 C112 146 106 130 100 130 C94 130 88 146 72 146 C42 146 12 112 12 62 Z"
+            fill="url(#gGold)" stroke="#7a5510" stroke-width="3"/>
+      <path d="M40 70 Q62 50 90 72 Q68 96 40 70 Z" fill="#1d0612"/>
+      <path d="M160 70 Q138 50 110 72 Q132 96 160 70 Z" fill="#1d0612"/>
+      <path d="M28 52 Q60 34 94 50" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="4" stroke-linecap="round"/>
+      <path d="M172 52 Q140 34 106 50" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="50" cy="112" r="5" fill="#7a5510" fill-opacity=".55"/>
+      <circle cx="150" cy="112" r="5" fill="#7a5510" fill-opacity=".55"/>
+      <text x="100" y="121" text-anchor="middle" font-family="Limelight, Georgia, serif" font-size="34" fill="#1d0612">?</text>
+    </symbol>
+
+    <!-- Topeng merah (kartu pembohong) -->
+    <symbol id="ico-mask-red" viewBox="0 0 200 170">
+      <path d="M12 62 C12 40 55 28 100 40 C145 28 188 40 188 62 C188 112 158 146 128 146 C112 146 106 130 100 130 C94 130 88 146 72 146 C42 146 12 112 12 62 Z"
+            fill="url(#gBlood)" stroke="#5c0d18" stroke-width="3"/>
+      <path d="M40 70 Q62 50 90 72 Q68 96 40 70 Z" fill="#1d0612"/>
+      <path d="M160 70 Q138 50 110 72 Q132 96 160 70 Z" fill="#1d0612"/>
+      <path d="M28 52 Q60 34 94 50" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="4" stroke-linecap="round"/>
+      <path d="M172 52 Q140 34 106 50" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="4" stroke-linecap="round"/>
+      <path d="M78 116 Q100 132 122 116" fill="none" stroke="#1d0612" stroke-width="5" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- Kaca pembesar -->
+    <symbol id="ico-magnifier" viewBox="0 0 120 120">
+      <circle cx="50" cy="50" r="32" fill="#35d0ba" fill-opacity=".18" stroke="url(#gGold)" stroke-width="10"/>
+      <path d="M34 42 Q40 30 54 28" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="5" stroke-linecap="round"/>
+      <line x1="74" y1="74" x2="106" y2="106" stroke="url(#gGold)" stroke-width="15" stroke-linecap="round"/>
+    </symbol>
+  </svg>
+
+  <div id="confetti" aria-hidden="true"></div>
+
+  <main class="app">
+
+    <!-- ========== 1. BERANDA ========== -->
+    <section id="screen-home" class="screen active">
+      <div class="hero">
+        <svg class="hero-mask" viewBox="0 0 200 170" role="img" aria-label="Topeng pembohong"><use href="#ico-mask"/></svg>
+        <h1 class="logo">Who The<br>Liar?</h1>
+        <p class="tagline">Semua tahu kata rahasianya, kecuali satu orang. Temukan si pembohong sebelum ia lolos!</p>
+
+        <div class="float-emojis" aria-hidden="true">
+          <span>🐱</span><span>🍕</span><span>🏖️</span><span>🎸</span><span>⚽</span><span>🧑‍🚀</span>
+        </div>
+
+        <button class="btn block" id="btn-start">Mulai main</button>
+        <button class="btn block ghost" id="btn-rules">Cara bermain</button>
+      </div>
+    </section>
+
+    <!-- ========== 2. PENGATURAN ========== -->
+    <section id="screen-setup" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" id="btn-back-home" aria-label="Kembali">←</button>
+        <h2 class="title left">Siapkan permainan</h2>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Pemain</h3>
+          <span class="pill" id="player-count">4/10</span>
+        </div>
+        <p class="muted small">Tulis nama masing-masing. Ketuk avatar untuk menggantinya.</p>
+        <ul id="player-list" class="player-list"></ul>
+        <button class="btn ghost block" id="btn-add-player">+ Tambah pemain</button>
+      </div>
+
+      <div class="panel">
+        <h3>Kategori kata</h3>
+        <div id="cat-chips" class="chips"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Waktu diskusi</h3>
+        <div class="seg" data-key="timerMin">
+          <button data-v="2">2 menit</button>
+          <button data-v="3" class="on">3 menit</button>
+          <button data-v="5">5 menit</button>
+        </div>
+        <h3 class="mt">Jumlah ronde</h3>
+        <div class="seg" data-key="totalRounds">
+          <button data-v="1">1</button>
+          <button data-v="3" class="on">3</button>
+          <button data-v="5">5</button>
+        </div>
+      </div>
+
+      <button class="btn block" id="btn-play">Bagikan kartu</button>
+    </section>
+
+    <!-- ========== 3. BAGI KARTU ========== -->
+    <section id="screen-reveal" class="screen">
+      <div class="topbar spread">
+        <span class="pill" id="reveal-round"></span>
+        <span class="pill ghost" id="reveal-progress"></span>
+      </div>
+
+      <div class="turn-head">
+        <div class="avatar-xl" id="reveal-avatar"></div>
+        <h2 id="reveal-name"></h2>
+        <p class="muted" id="reveal-hint"></p>
+      </div>
+
+      <div class="flip" id="flip">
+        <div class="flip-inner">
+          <div class="face cover">
+            <svg class="cover-mask" viewBox="0 0 200 170" aria-hidden="true"><use href="#ico-mask"/></svg>
+            <span class="cover-text">Rahasia</span>
+          </div>
+          <div class="face role" id="role-face">
+            <div id="role-content"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn block" id="btn-reveal"></button>
+    </section>
+
+    <!-- ========== 4. DISKUSI ========== -->
+    <section id="screen-discuss" class="screen">
+      <div class="topbar spread">
+        <span class="pill" id="discuss-round"></span>
+        <span class="pill gold" id="discuss-cat"></span>
+      </div>
+
+      <h2 class="title">Waktunya diskusi</h2>
+      <p class="muted center">Bergiliran beri satu petunjuk singkat tentang kata rahasia. Jangan terlalu jelas: si pembohong ikut menyimak!</p>
+
+      <div class="panel timer-card">
+        <div class="timer" id="timer">03:00</div>
+        <div class="bar"><i id="timer-bar"></i></div>
+        <button class="btn small ghost" id="btn-timer">Mulai timer</button>
+      </div>
+
+      <h3 class="sub">Urutan giliran</h3>
+      <ol id="order-list" class="order"></ol>
+
+      <button class="btn block danger" id="btn-to-vote">Mulai voting</button>
+    </section>
+
+    <!-- ========== 5. VOTING ========== -->
+    <section id="screen-vote" class="screen">
+      <div class="topbar spread">
+        <span class="pill" id="vote-round"></span>
+        <span class="pill ghost" id="vote-progress"></span>
+      </div>
+
+      <div id="vote-gate" class="turn-head">
+        <div class="avatar-xl" id="gate-avatar"></div>
+        <p class="muted">Serahkan perangkat ke</p>
+        <h2 id="gate-name"></h2>
+        <button class="btn block" id="btn-gate">Saya siap memilih</button>
+      </div>
+
+      <div id="vote-panel" hidden>
+        <svg class="mini-icon" viewBox="0 0 120 120" aria-hidden="true"><use href="#ico-magnifier"/></svg>
+        <h2 class="title" id="vote-title"></h2>
+        <p class="muted center">Pilih satu orang yang kamu curigai. Pilihanmu rahasia.</p>
+        <div id="vote-grid" class="vote-grid"></div>
+        <button class="btn block" id="btn-lock" disabled>Kunci pilihan</button>
+      </div>
+    </section>
+
+    <!-- ========== 6. HASIL VOTING ========== -->
+    <section id="screen-result" class="screen">
+      <h2 class="title">Hasil voting</h2>
+      <ul id="tally" class="tally"></ul>
+
+      <button class="btn block" id="btn-reveal-liar">Ungkap si pembohong</button>
+
+      <div id="verdict" class="verdict" hidden></div>
+      <button class="btn block" id="btn-after-verdict" hidden></button>
+    </section>
+
+    <!-- ========== 7. TEBAK KATA ========== -->
+    <section id="screen-guess" class="screen">
+      <div class="turn-head">
+        <div class="avatar-xl liar" id="guess-avatar"></div>
+        <h2 id="guess-title"></h2>
+        <p class="muted">Tebak kata rahasia dari kategori <b id="guess-cat"></b>. Kamu hanya punya satu kesempatan!</p>
+      </div>
+      <div id="guess-grid" class="guess-grid"></div>
+      <div id="guess-msg" class="verdict" hidden></div>
+      <button class="btn block" id="btn-guess-next" hidden>Lihat skor</button>
+    </section>
+
+    <!-- ========== 8. SKOR ========== -->
+    <section id="screen-score" class="screen">
+      <h2 class="title" id="score-title"></h2>
+      <div class="word-recap" id="word-recap"></div>
+      <ol id="score-list" class="score-list"></ol>
+      <button class="btn block" id="btn-next-round"></button>
+    </section>
+
+    <!-- ========== 9. PEMENANG ========== -->
+    <section id="screen-final" class="screen">
+      <div class="winner">
+        <div class="crown" aria-hidden="true">👑</div>
+        <div class="avatar-xl big" id="winner-avatar"></div>
+        <h2 id="winner-name"></h2>
+        <p class="muted" id="winner-sub"></p>
+      </div>
+      <ol id="final-list" class="score-list"></ol>
+      <button class="btn block" id="btn-again">Main lagi</button>
+      <button class="btn block ghost" id="btn-home">Menu utama</button>
+    </section>
+
+  </main>
+
+  <!-- ===== Dialog aturan ===== -->
+  <dialog id="rules-dialog">
+    <h2 class="title left">Cara bermain</h2>
+    <ol class="rules">
+      <li><b>Bagi kartu.</b> Kartu dibagikan satu per satu secara rahasia. Semua pemain mendapat kata yang sama, kecuali <b>satu pembohong</b> yang hanya tahu kategorinya.</li>
+      <li><b>Beri petunjuk.</b> Bergiliran ucapkan satu kata atau kalimat pendek yang berhubungan dengan kata rahasia, tanpa menyebutnya langsung. Si pembohong harus berpura-pura tahu.</li>
+      <li><b>Voting rahasia.</b> Setelah diskusi, tiap pemain memilih siapa yang dicurigai. Suara terbanyak dituduh.</li>
+      <li><b>Pembohong tertangkap?</b> Ia masih boleh menebak kata rahasia. Tebakan benar: pembohong +2 poin. Tebakan salah: semua warga +1, dan +1 lagi untuk yang memilih dengan tepat.</li>
+      <li><b>Pembohong lolos?</b> Jika salah tuduh atau suara seri, pembohong mendapat +3 poin.</li>
+    </ol>
+    <button class="btn block" id="btn-close-rules">Mengerti</button>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

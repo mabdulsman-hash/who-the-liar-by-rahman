@@ -1,0 +1,358 @@
+/* =========================================================
+   WHO THE LIAR? — tema panggung teater & pesta topeng
+   Palet: beludru anggur, emas, gading, teal (warga), merah (pembohong)
+   ========================================================= */
+
+:root {
+  --velvet: #1d0612;
+  --curtain: #4a0f2b;
+  --curtain-hi: #6e1a3f;
+  --panel: #2b0b1c;
+  --panel-2: #3a1128;
+  --gold: #f2c14e;
+  --gold-deep: #b98a1f;
+  --ivory: #fff4e0;
+  --muted: #d3b9a6;
+  --teal: #35d0ba;
+  --blood: #ff5a5f;
+  --line: rgba(242, 193, 78, .35);
+
+  --font-display: 'Limelight', 'Georgia', serif;
+  --font-body: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+[hidden] { display: none !important; }
+
+html { min-height: 100%; }
+
+body {
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--ivory);
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(29, 6, 18, .1) 0%, rgba(29, 6, 18, .88) 75%),
+    radial-gradient(ellipse 80% 45% at 50% -8%, rgba(255, 228, 150, .40), transparent 70%),
+    repeating-linear-gradient(90deg, var(--curtain) 0 34px, var(--curtain-hi) 34px 46px, var(--curtain) 46px 80px),
+    var(--velvet);
+  background-attachment: fixed;
+}
+
+.app { max-width: 520px; margin: 0 auto; padding: 20px 16px 48px; min-height: 100vh; }
+
+.screen { display: none; }
+.screen.active { display: block; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Tipografi ---------- */
+h1, h2, h3 { font-weight: 800; line-height: 1.15; }
+.title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.9rem;
+  text-align: center;
+  color: var(--gold);
+  margin: 4px 0 10px;
+  text-wrap: balance;
+}
+.title.left { text-align: left; margin: 0; font-size: 1.6rem; }
+.sub { font-size: 1rem; margin: 22px 0 10px; color: var(--gold); }
+h3 { font-size: 1.05rem; color: var(--gold); }
+.mt { margin-top: 18px; }
+.muted { color: var(--muted); }
+.small { font-size: .88rem; }
+.center { text-align: center; margin-bottom: 14px; }
+
+/* ---------- Tombol ---------- */
+.btn {
+  font: inherit;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #2a1204;
+  background: linear-gradient(180deg, #ffe08a, var(--gold));
+  border: 0;
+  border-bottom: 5px solid var(--gold-deep);
+  border-radius: 12px;
+  padding: 13px 20px;
+  cursor: pointer;
+  transition: transform .08s, border-bottom-width .08s, filter .15s;
+}
+.btn:hover { filter: brightness(1.06); }
+.btn:active { transform: translateY(3px); border-bottom-width: 2px; }
+.btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.btn.block { display: block; width: 100%; margin-top: 14px; }
+.btn.small { padding: 9px 16px; font-size: .95rem; }
+.btn.ghost {
+  background: transparent;
+  color: var(--gold);
+  border: 2px solid var(--gold);
+  border-bottom-width: 4px;
+}
+.btn.danger {
+  color: #fff;
+  background: linear-gradient(180deg, #ff7a7e, #d62839);
+  border-bottom-color: #7c1320;
+}
+.icon-btn {
+  font: inherit; font-size: 1.3rem; line-height: 1;
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--panel); color: var(--gold);
+  border: 1px solid var(--line); cursor: pointer;
+}
+:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+
+/* ---------- Panel & elemen umum ---------- */
+.panel {
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: 14px;
+}
+.panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+
+.topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.topbar.spread { justify-content: space-between; }
+
+.pill {
+  display: inline-block;
+  font-size: .82rem; font-weight: 800;
+  padding: 5px 12px; border-radius: 999px;
+  background: var(--gold); color: #2a1204;
+}
+.pill.ghost { background: transparent; color: var(--gold); border: 1.5px solid var(--line); }
+.pill.gold { background: var(--panel-2); color: var(--gold); border: 1.5px solid var(--gold); }
+
+.avatar-xl {
+  width: 92px; height: 92px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 3rem;
+  margin: 0 auto 10px;
+  background: radial-gradient(circle at 30% 25%, #6e1a3f, var(--panel));
+  border: 3px solid var(--gold);
+  box-shadow: 0 0 0 5px rgba(242, 193, 78, .15), 0 8px 20px rgba(0, 0, 0, .4);
+}
+.avatar-xl.big { width: 120px; height: 120px; font-size: 4rem; }
+.avatar-xl.liar { border-color: var(--blood); box-shadow: 0 0 0 5px rgba(255, 90, 95, .2), 0 8px 20px rgba(0, 0, 0, .4); }
+
+.turn-head { text-align: center; margin-bottom: 16px; }
+.turn-head h2 { font-size: 1.7rem; margin-bottom: 6px; }
+
+.mini-icon { display: block; width: 64px; height: 64px; margin: 0 auto 4px; color: var(--gold); }
+
+/* ---------- Beranda ---------- */
+.hero { text-align: center; padding-top: 18px; }
+.hero-mask {
+  width: min(62vw, 250px); height: auto;
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, .55));
+  animation: bob 3.6s ease-in-out infinite;
+}
+@keyframes bob { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-8px) rotate(3deg); } }
+
+.logo {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 13vw, 3.8rem);
+  line-height: 1.02;
+  letter-spacing: .02em;
+  color: var(--gold);
+  text-shadow: 0 3px 0 #7a5510, 0 10px 30px rgba(0, 0, 0, .5);
+  margin: 10px 0 12px;
+}
+.tagline { max-width: 34ch; margin: 0 auto 18px; color: var(--muted); line-height: 1.5; }
+.float-emojis { display: flex; justify-content: center; gap: 10px; font-size: 1.9rem; margin-bottom: 20px; }
+.float-emojis span { display: inline-block; animation: bob 3s ease-in-out infinite; }
+.float-emojis span:nth-child(2n) { animation-delay: -.8s; }
+.float-emojis span:nth-child(3n) { animation-delay: -1.6s; }
+
+/* ---------- Daftar pemain ---------- */
+.player-list { list-style: none; margin: 12px 0; display: grid; gap: 10px; }
+.player-row { display: flex; align-items: center; gap: 10px; }
+.avatar-btn {
+  flex: none; width: 48px; height: 48px; border-radius: 50%;
+  font-size: 1.6rem; cursor: pointer;
+  background: var(--velvet); border: 2px solid var(--gold);
+}
+.avatar-btn:active { transform: rotate(-12deg) scale(.94); }
+.player-row input {
+  flex: 1; min-width: 0;
+  font: inherit; font-weight: 800; color: var(--ivory);
+  background: var(--velvet);
+  border: 1.5px solid var(--line); border-radius: 10px;
+  padding: 12px 14px;
+}
+.player-row input::placeholder { color: rgba(211, 185, 166, .55); }
+.player-row input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(242, 193, 78, .25); }
+.del-btn {
+  flex: none; width: 40px; height: 40px; border-radius: 10px;
+  font-size: 1rem; cursor: pointer;
+  background: transparent; color: var(--muted); border: 1.5px solid var(--line);
+}
+.del-btn:disabled { opacity: .25; cursor: not-allowed; }
+
+/* ---------- Chip kategori & segmented ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chip {
+  font: inherit; font-weight: 800; font-size: .92rem; cursor: pointer;
+  color: var(--ivory); background: var(--velvet);
+  border: 1.5px solid var(--line); border-radius: 999px; padding: 8px 14px;
+}
+.chip.on { background: var(--gold); color: #2a1204; border-color: var(--gold); }
+
+.seg { display: flex; margin-top: 10px; border: 1.5px solid var(--line); border-radius: 12px; overflow: hidden; }
+.seg button {
+  flex: 1; font: inherit; font-weight: 800; padding: 11px 6px; cursor: pointer;
+  color: var(--muted); background: var(--velvet); border: 0;
+}
+.seg button + button { border-left: 1.5px solid var(--line); }
+.seg button.on { background: var(--gold); color: #2a1204; }
+
+/* ---------- Kartu peran (flip) ---------- */
+.flip { perspective: 1200px; width: min(78vw, 300px); height: clamp(320px, 50vh, 400px); margin: 0 auto; }
+.flip-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .7s cubic-bezier(.2, .8, .2, 1); }
+.flip.flipped .flip-inner { transform: rotateY(180deg); }
+
+.face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border-radius: 18px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 22px;
+  border: 3px solid var(--gold);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, .5), inset 0 0 0 6px var(--panel), inset 0 0 0 7.5px var(--line);
+}
+.face.cover {
+  background:
+    repeating-linear-gradient(45deg, rgba(242, 193, 78, .07) 0 12px, transparent 12px 24px),
+    linear-gradient(160deg, var(--curtain-hi), var(--velvet));
+}
+.cover-mask { width: 70%; height: auto; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .5)); }
+.cover-text { font-family: var(--font-display); font-size: 1.5rem; color: var(--gold); margin-top: 14px; }
+
+.face.role { transform: rotateY(180deg); background: linear-gradient(170deg, #12463f, #0b1f24); border-color: var(--teal); }
+.face.role.liar { background: linear-gradient(170deg, #6b0f1d, #1d0612); border-color: var(--blood); }
+
+.role-tag { font-weight: 800; font-size: .95rem; color: var(--teal); margin-bottom: 8px; }
+.role.liar .role-tag { color: var(--blood); font-size: 1.15rem; }
+.word-emoji { font-size: 6rem; line-height: 1.1; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, .4)); }
+.word-text { font-family: var(--font-display); font-size: 2rem; margin: 6px 0 12px; color: var(--ivory); }
+.role-note { font-size: .88rem; color: var(--muted); line-height: 1.45; }
+.liar-mask { width: 62%; height: auto; margin-bottom: 8px; animation: bob 3s ease-in-out infinite; }
+
+/* ---------- Diskusi & timer ---------- */
+.timer-card { text-align: center; }
+.timer { font-family: var(--font-display); font-size: 4rem; line-height: 1; color: var(--ivory); letter-spacing: .04em; }
+.timer.low { color: var(--blood); animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .45; } }
+.bar { height: 10px; border-radius: 99px; background: var(--velvet); overflow: hidden; margin: 14px 0; border: 1px solid var(--line); }
+.bar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, var(--teal), var(--gold)); transition: width 1s linear; }
+
+.order { list-style: none; display: grid; gap: 8px; counter-reset: turn; }
+.order li {
+  counter-increment: turn;
+  display: flex; align-items: center; gap: 12px;
+  background: var(--panel); border: 1.5px solid var(--line); border-radius: 12px; padding: 8px 12px;
+  font-weight: 800;
+}
+.order li::before {
+  content: counter(turn);
+  width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+  font-size: .85rem; background: var(--gold); color: #2a1204; flex: none;
+}
+.order .av { font-size: 1.5rem; }
+
+/* ---------- Voting ---------- */
+.vote-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 8px 0; }
+.vote-card {
+  font: inherit; font-weight: 800; color: var(--ivory); cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  background: var(--panel); border: 2px solid var(--line); border-radius: 14px; padding: 14px 8px;
+  transition: transform .12s, border-color .12s, background .12s;
+}
+.vote-card .av { font-size: 2.4rem; }
+.vote-card.on { border-color: var(--gold); background: var(--panel-2); transform: scale(1.04); box-shadow: 0 0 0 3px rgba(242, 193, 78, .3); }
+
+/* ---------- Hasil ---------- */
+.tally { list-style: none; display: grid; gap: 10px; margin: 8px 0 6px; }
+.tally li { background: var(--panel); border: 1.5px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.tally .row { display: flex; align-items: center; gap: 10px; font-weight: 800; }
+.tally .av { font-size: 1.6rem; }
+.tally .cnt { margin-left: auto; color: var(--gold); }
+.tally .meter { height: 8px; border-radius: 99px; background: var(--velvet); margin-top: 8px; overflow: hidden; }
+.tally .meter i { display: block; height: 100%; background: linear-gradient(90deg, var(--gold), var(--blood)); border-radius: 99px; transition: width .8s ease; }
+
+.verdict {
+  margin-top: 16px; padding: 18px; text-align: center; line-height: 1.5;
+  border-radius: 16px; border: 2px solid var(--gold); background: var(--panel-2);
+  animation: pop .4s cubic-bezier(.2, 1.4, .4, 1);
+}
+.verdict.good { border-color: var(--teal); }
+.verdict.bad { border-color: var(--blood); }
+.verdict .big { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 6px; }
+.verdict .who { font-size: 2.6rem; }
+.verdict svg { width: 90px; height: auto; }
+@keyframes pop { from { transform: scale(.85); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* ---------- Tebak kata ---------- */
+.guess-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.guess-card {
+  font: inherit; font-weight: 800; color: var(--ivory); cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: var(--panel); border: 2px solid var(--line); border-radius: 14px; padding: 12px 6px;
+}
+.guess-card .em { font-size: 2.6rem; line-height: 1.1; }
+.guess-card:disabled { cursor: default; }
+.guess-card.right { border-color: var(--teal); background: #0f4a42; }
+.guess-card.wrong { border-color: var(--blood); background: #5a1520; }
+.guess-card.dim { opacity: .45; }
+
+/* ---------- Skor ---------- */
+.word-recap {
+  text-align: center; padding: 12px; border-radius: 14px; margin-bottom: 12px;
+  background: var(--panel); border: 1.5px dashed var(--gold);
+}
+.word-recap .em { font-size: 2.6rem; }
+.score-list { list-style: none; display: grid; gap: 8px; }
+.score-list li {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--panel); border: 1.5px solid var(--line); border-radius: 12px; padding: 10px 12px; font-weight: 800;
+}
+.score-list li.first { border-color: var(--gold); background: var(--panel-2); }
+.score-list .rank { width: 30px; text-align: center; font-size: 1.3rem; }
+.score-list .av { font-size: 1.7rem; }
+.score-list .pts { margin-left: auto; font-size: 1.25rem; color: var(--gold); }
+.score-list .delta { font-size: .85rem; color: var(--teal); margin-left: 6px; }
+.score-list .tag { font-size: .72rem; background: var(--blood); color: #fff; border-radius: 6px; padding: 2px 6px; margin-left: 6px; }
+
+/* ---------- Pemenang ---------- */
+.winner { text-align: center; padding: 6px 0 18px; }
+.crown { font-size: 3rem; animation: bob 2.4s ease-in-out infinite; }
+.winner h2 { font-family: var(--font-display); font-weight: 400; font-size: 2rem; color: var(--gold); }
+
+/* ---------- Dialog aturan ---------- */
+dialog {
+  width: min(92vw, 480px); margin: auto; padding: 22px;
+  color: var(--ivory); background: var(--panel);
+  border: 2px solid var(--gold); border-radius: 18px;
+}
+dialog::backdrop { background: rgba(10, 2, 6, .75); }
+.rules { padding-left: 20px; margin: 14px 0 6px; display: grid; gap: 10px; line-height: 1.5; font-size: .95rem; }
+.rules b { color: var(--gold); }
+
+/* ---------- Toast & konfeti ---------- */
+.toast {
+  position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 30px);
+  background: var(--ivory); color: #2a1204; font-weight: 800;
+  padding: 12px 18px; border-radius: 12px; opacity: 0; pointer-events: none;
+  transition: opacity .25s, transform .25s; z-index: 50; max-width: 90vw; text-align: center;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+#confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 40; }
+#confetti span { position: absolute; top: -40px; font-size: 1.6rem; animation: fall linear forwards; }
+@keyframes fall { to { transform: translateY(110vh) rotate(540deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+}
